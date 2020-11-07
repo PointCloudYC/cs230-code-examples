@@ -29,6 +29,7 @@ class Params():
             params = json.load(f)
             self.__dict__.update(params)
 
+    # how to use property? https://stackoverflow.com/questions/17330160/how-does-the-property-decorator-work-in-python
     @property
     def dict(self):
         """Gives dict-like access to Params instance by `params.dict['learning_rate']`"""

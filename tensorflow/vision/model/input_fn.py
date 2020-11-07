@@ -78,7 +78,8 @@ def input_fn(is_training, filenames, labels, params):
             .prefetch(1)  # make sure you always have one batch ready to serve
         )
 
-    # Create reinitializable iterator from dataset
+    # Create re-initializable iterator from dataset
+    # Note: u can also create iterator using its from_structure, check Iterator official doc
     iterator = dataset.make_initializable_iterator()
     images, labels = iterator.get_next()
     iterator_init_op = iterator.initializer

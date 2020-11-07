@@ -71,15 +71,19 @@ def model_fn(mode, inputs, params, reuse=False):
         logits = build_model(is_training, inputs, params)
         predictions = tf.argmax(logits, 1)
 
-    # Define loss and accuracy
+    # Define loss and accuracy, NOTE: labels is not one-hot encoding form while logits is one-hot encoding form
+    # https://www.tensorflow.org/api_docs/python/tf/compat/v1/losses/sparse_softmax_cross_entropy
     loss = tf.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
     accuracy = tf.reduce_mean(tf.cast(tf.equal(labels, predictions), tf.float32))
 
     # Define training step that minimizes the loss with the Adam optimizer
     if is_training:
         optimizer = tf.train.AdamOptimizer(params.learning_rate)
+
+        # https://stackoverflow.com/questions/41166681/what-does-global-step-mean-in-tensorflow
         global_step = tf.train.get_or_create_global_step()
         if params.use_batch_norm:
+            # TODO: ??
             # Add a dependency to update the moving mean and variance for batch normalization
             with tf.control_dependencies(tf.get_collection(tf.GraphKeys.UPDATE_OPS)):
                 train_op = optimizer.minimize(loss, global_step=global_step)
