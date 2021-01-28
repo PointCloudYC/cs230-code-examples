@@ -19,6 +19,7 @@ class Params():
     def __init__(self, json_path):
         with open(json_path) as f:
             params = json.load(f)
+            # __dict__ is inherited dict object storing attributes 
             self.__dict__.update(params)
 
     def save(self, json_path):
@@ -37,6 +38,7 @@ class Params():
         return self.__dict__
 
 
+# similar to streaming metrics, e.g. TF2's Precision or Recall
 class RunningAverage():
     """A simple class that maintains the running average of a quantity
     
